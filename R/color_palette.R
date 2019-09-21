@@ -55,21 +55,34 @@ color_palette <- function(file,
 
 
   if(show_swatch || !is.null(image_out)){
-    swatch_dim = c(100, 100)
-    text.position = swatch_dim[[2]] / 10
+    swatch_dir %<>% stringr::str_to_lower()
+
+    if(!stringr::str_detect(swatch_dir, "x|y")){
+      swatch_dir = ifelse(length(hex_codes) <= 12, "y", "x")
+      warning(paste("swatch_dir not recognized. Defaulting to",swatch_dir))
+    }
+
+    swatch_dim = c(200, 200)
+    text.position = c(swatch_dim[[1]] / 20, swatch_dim[[2]] / 10)
+    font = 80
 
     display <-
       imager::imfill(swatch_dim[[1]], swatch_dim[[2]], val = hex_codes[[1]]) %>%
-      imager::draw_text(10, text.position , hex_codes[[1]], color = "white")
+      imager::draw_text(10,
+                        text.position[[2]] ,
+                        hex_codes[[1]],
+                        color = "white",
+                        fsize = 80)
 
     for (i in 2:length(hex_codes)) {
       to_append <- imager::imfill(swatch_dim[[1]],
                                   swatch_dim[[2]],
                                   val = hex_codes[[i]]) %>%
         imager::draw_text(10,
-                          text.position,
+                          text.position[[2]],
                           hex_codes[[i]],
-                          color = "white")
+                          color = "white",
+                          fsize = font)
 
       display <- list(display, to_append) %>%
         imager::imappend(swatch_dir)
@@ -110,7 +123,4 @@ color_palette <- function(file,
 
   hex_codes
 }
-
-color_palette(file, export_img = "sample-palette.png")
-
 
