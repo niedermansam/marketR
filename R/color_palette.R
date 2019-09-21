@@ -62,9 +62,9 @@ color_palette <- function(file,
       warning(paste("swatch_dir not recognized. Defaulting to",swatch_dir))
     }
 
-    swatch_dim = c(200, 200)
+    swatch_dim = c(100, 100)
     text.position = c(swatch_dim[[1]] / 20, swatch_dim[[2]] / 10)
-    font = 80
+    font = 20
 
     display <-
       imager::imfill(swatch_dim[[1]], swatch_dim[[2]], val = hex_codes[[1]]) %>%
@@ -72,7 +72,7 @@ color_palette <- function(file,
                         text.position[[2]] ,
                         hex_codes[[1]],
                         color = "white",
-                        fsize = 80)
+                        fsize = font)
 
     for (i in 2:length(hex_codes)) {
       to_append <- imager::imfill(swatch_dim[[1]],
